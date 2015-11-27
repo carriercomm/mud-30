@@ -63,7 +63,7 @@ class InventoryActionCriteria(models.Model):
     should_have = models.BooleanField(default=True)
     error_message = models.TextField(max_length=140)
 
-class SaveSlotActionCriteria(models.Model):
+class SaveSlotActionResult(models.Model):
     '''
     A save slot result for a particular action
     '''

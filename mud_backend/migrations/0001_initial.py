@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Action',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('message', models.TextField(max_length=140)),
                 ('matcher', models.CharField(max_length=256)),
             ],
@@ -23,13 +23,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Inventory',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
             ],
         ),
         migrations.CreateModel(
             name='InventoryActionCriteria',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('order', models.IntegerField()),
                 ('should_have', models.BooleanField(default=True)),
                 ('error_message', models.TextField(max_length=140)),
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='InventoryActionResult',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('should_have', models.BooleanField(default=True)),
                 ('message', models.TextField(max_length=140)),
                 ('action', models.ForeignKey(to='mud_backend.Action')),
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Item',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('description', models.TextField(max_length=140)),
                 ('can_inventory', models.BooleanField(default=False)),
             ],
@@ -58,14 +58,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Room',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('description', models.TextField(max_length=140)),
             ],
         ),
         migrations.CreateModel(
             name='RoomActionResult',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('action', models.ForeignKey(to='mud_backend.Action')),
                 ('room', models.ForeignKey(to='mud_backend.Room')),
             ],
@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SaveSlot',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('key', models.CharField(max_length=64)),
                 ('value', models.CharField(max_length=256)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
@@ -82,7 +82,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SaveSlotActionCriteria',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('order', models.IntegerField()),
+                ('key', models.CharField(max_length=64)),
+                ('value', models.CharField(max_length=256)),
+                ('error_message', models.TextField(max_length=140)),
+                ('action', models.ForeignKey(to='mud_backend.Action')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='SaveSlotActionResult',
+            fields=[
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('key', models.CharField(max_length=64)),
                 ('value', models.CharField(max_length=256)),
                 ('message', models.TextField(max_length=140)),
@@ -92,7 +103,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserProfile',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('room', models.ForeignKey(to='mud_backend.Room')),
             ],
         ),
