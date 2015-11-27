@@ -7,4 +7,5 @@ class User(models.Model):
 
     def prefill_token(self, token_length=32):
         letters = (string.ascii_uppercase + string.ascii_lowercase + string.digits) * token_length
-        return self.token = ''.join(random.sample(letters, token_length))
+        self.token = ''.join(random.sample(letters, token_length))
+        return self.token
