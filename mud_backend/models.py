@@ -66,7 +66,7 @@ class InventoryActionCriteria(models.Model):
     '''
     action = models.ForeignKey(Action)
     order = models.IntegerField()
-    inventory_item = models.ForeignKey(Inventory)
+    item = models.ForeignKey(Item)
     should_have = models.BooleanField(default=True)
     error_message = models.TextField(max_length=140)
 
@@ -84,7 +84,7 @@ class InventoryActionResult(models.Model):
     A side effect from an action that updates inventory
     '''
     action = models.ForeignKey(Action)
-    inventory_item = models.ForeignKey(Inventory)
+    item = models.ForeignKey(Item)
     should_have = models.BooleanField(default=True)
     message = models.TextField(max_length=140)
 
