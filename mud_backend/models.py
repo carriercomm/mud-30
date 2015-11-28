@@ -11,6 +11,7 @@ class UserProfile(models.Model):
     '''
     Extra fields to attach to the user
     '''
+    user = models.ForeignKey(User)
     room = models.ForeignKey(Room)
 
 class Item(models.Model):
