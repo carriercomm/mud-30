@@ -12,9 +12,9 @@ def resolve_room_id(request):
     if request.user == None:
         return None
 
-    current_profile = UserProfile.filter(user_id=request.user.id).first()
+    current_profile = UserProfile.objects.filter(user_id=request.user.id).first()
     if current_profile == None:
-        return Room.objects().first()
+        return Room.objects.first().id
 
     # get the current room and try to match an action
     return current_profile.room_id
@@ -27,10 +27,11 @@ def find_action(room_id, command):
 def index(request):
     command = request.GET.get('command', '')
 
-    if command == '':
-        return build_response('Whats your command?')
-
     room_id = resolve_room_id(request)
+
+    if command == '':
+        room = Room.objects.filter(id=room_id).first()
+        return build_response(room.description)
 
     action = find_action(room_id, command)
     if action is None:
