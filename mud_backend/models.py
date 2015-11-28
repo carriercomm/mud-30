@@ -7,6 +7,9 @@ class Room(models.Model):
     '''
     description = models.TextField(max_length=140)
 
+    def __str__(self):
+        return self.description
+
 class UserProfile(models.Model):
     '''
     Extra fields to attach to the user
@@ -43,6 +46,9 @@ class Action(models.Model):
     message = models.TextField(max_length=140)
     room = models.ForeignKey(Room)
     matcher = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.matcher + ' : ' + self.message
 
 class SaveSlotActionCriteria(models.Model):
     '''
