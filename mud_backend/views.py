@@ -2,8 +2,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.core import serializers
-
+import re
 from .models import *
+
+def build_response(*args):
+    return JsonResponse({ 'messages' : args })
 
 def resolve_room_id(request):
     if request.user == None:
@@ -11,27 +14,26 @@ def resolve_room_id(request):
 
     current_profile = UserProfile.filter(user_id=request.user.id).first()
     if current_profile == None:
-        return None
+        return Room.objects().first()
 
     # get the current room and try to match an action
     return current_profile.room_id
 
+def find_action(room_id, command):
+    for potential_action in Action.objects.filter(room_id=room_id).all():
+        if re.match(potential_action.matcher, command, flags=re.IGNORECASE):
+            return potential_action
+
 def index(request):
     command = request.GET.get('command', '')
 
-    empty_response = JsonResponse({ 'messages' : [] })
-
     if command == '':
-        return empty_response
+        return build_response('Whats your command?')
 
     room_id = resolve_room_id(request)
-    if room_id is None:
-        return empty_response
 
-    potential_actions = Action.objects.filter(room_id=room_id).all()
+    action = find_action(room_id, command)
+    if action is None:
+        return build_response('Sorry, I don\'t know what you mean')
 
-    response = {
-        'messages' : ['a', 'b', 'c']
-    }
-
-    return JsonResponse(response)
+    return build_response(action.message)
