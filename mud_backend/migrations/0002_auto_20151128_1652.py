@@ -26,13 +26,20 @@ def stub_map(apps, schema_editor):
     key.save()
 
     Action = apps.get_model('mud_backend', 'Action')
+    InventoryActionCriteria = apps.get_model('mud_backend', 'InventoryActionCriteria')
+    InventoryActionResult = apps.get_model('mud_backend', 'InventoryActionResult')
+    RoomActionResult = apps.get_model('mud_backend', 'RoomActionResult')
+
     # create the action for going from the foyer to the study
     foyer_to_study = Action(message='You entered the study', room_id=entrance_room.id, matcher='(go north|enter door)')
     foyer_to_study.save()
+    InventoryActionCriteria(action_id=foyer_to_study.id, order=1, item_id=key.id, should_have=True, error_message='The door is locked. Looks like you need a key').save()
+    RoomActionResult(action_id=foyer_to_study.id, room_id=second_room.id).save()
 
     # create the action for going from the study to the foyer
     study_to_foyer = Action(message='You left the study and are now in the foyer again', room_id=second_room.id, matcher='(exit|leave study|go south)')
     study_to_foyer.save()
+    RoomActionResult(action_id=study_to_foyer.id, room_id=entrance_room.id).save()
 
 class Migration(migrations.Migration):
 
