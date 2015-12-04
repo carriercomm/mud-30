@@ -41,6 +41,11 @@ def stub_map(apps, schema_editor):
     study_to_foyer.save()
     RoomActionResult(action_id=study_to_foyer.id, room_id=entrance_room.id).save()
 
+    # create the action for picking up the key
+    pick_up_key = Action(message='You picked up the key', room_id=entrance_room.id, matcher='(pick up|take) key')
+    pick_up_key.save()
+    InventoryActionResult(action_id=pick_up_key.id, item_id=key.id, should_have=True, message='You picked up the key').save()
+
 class Migration(migrations.Migration):
 
     dependencies = [
