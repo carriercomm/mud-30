@@ -4,9 +4,6 @@ from .models import *
 from .action_response import build_response
 
 def resolve_room_id(request):
-    if request.user == None:
-        return None
-
     current_profile = UserProfile.objects.filter(user_id=request.user.id).first()
     if current_profile == None:
         return Room.objects.first().id
