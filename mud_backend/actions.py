@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-from django.core import serializers
 import re
 from .models import *
 
