@@ -17,12 +17,18 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User)
     room = models.ForeignKey(Room)
 
+    def __str__(self):
+        return self.user.username + ' is in room ' + self.room.id
+
 class Item(models.Model):
     '''
     An item that the user can potentially pick up or interact with
     '''
     description = models.TextField(max_length=140)
     can_inventory = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.description
 
 class Inventory(models.Model):
     '''
@@ -31,6 +37,9 @@ class Inventory(models.Model):
     user = models.ForeignKey(User)
     item = models.ForeignKey(Item)
 
+    def __str__(self):
+        return self.user.username + ' has ' + self.item.description
+
 class SaveSlot(models.Model):
     '''
     A save slot field for a particular user
@@ -38,6 +47,9 @@ class SaveSlot(models.Model):
     user = models.ForeignKey(User)
     key = models.CharField(max_length=64)
     value = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.user.username + ': ' + self.key + ' = ' + self.value
 
 class Action(models.Model):
     '''
@@ -60,6 +72,9 @@ class SaveSlotActionCriteria(models.Model):
     value = models.CharField(max_length=256)
     error_message = models.TextField(max_length=140)
 
+    def __str__(self):
+        return self.action.matcher + ' ' + self.key + ' = ' + self.value
+
 class InventoryActionCriteria(models.Model):
     '''
     An inventory requirement for a particular action
@@ -70,6 +85,12 @@ class InventoryActionCriteria(models.Model):
     should_have = models.BooleanField(default=True)
     error_message = models.TextField(max_length=140)
 
+    def __str__(self):
+        verb = 'should have'
+        if not self.should_have:
+            verb = 'should not have'
+        return self.action.matcher + ' ' + verb + ' ' + self.item.description 
+
 class SaveSlotActionResult(models.Model):
     '''
     A save slot result for a particular action
@@ -78,6 +99,9 @@ class SaveSlotActionResult(models.Model):
     key = models.CharField(max_length=64)
     value = models.CharField(max_length=256)
     message = models.TextField(max_length=140)
+
+    def __str__(self):
+        return self.message
 
 class InventoryActionResult(models.Model):
     '''
@@ -88,9 +112,15 @@ class InventoryActionResult(models.Model):
     should_have = models.BooleanField(default=True)
     message = models.TextField(max_length=140)
 
+    def __str__(self):
+        return self.message
+
 class RoomActionResult(models.Model):
     '''
     The updated room from a particular action
     '''
     action = models.ForeignKey(Action)
     room = models.ForeignKey(Room)
+
+    def __str__(self):
+        return self.action.matcher + ' => ' + self.room.id
