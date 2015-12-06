@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Room, Item, Action, SaveSlotActionCriteria, InventoryActionCriteria, SaveSlotActionResult, InventoryActionResult, RoomActionResult
+from .models import *
 
 admin.site.register(Room)
 admin.site.register(Item)
