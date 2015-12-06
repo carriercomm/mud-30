@@ -52,6 +52,30 @@ def criteria_met(criteria_list, user):
             return False, criteria.error_message
     return True, ''
 
+def perform_side_effects(action, user):
+    messages = []
+    for result in SaveSlotActionResult.objects.filter(action_id=action.id):
+        # replace the existing save slot, if it exists. Create otherwise
+        save_slot, created = SaveSlot.objects.get_or_create(user_id=user.id, key=result.key)
+        save_slot.value = result.value
+        save_slot.save()
+        messages.append(result.message)
+
+    for result in InventoryActionResult.objects.filter(action_id=action.id):
+       inventory_item, created = Inventory.objects.get_or_create(user_id=user.id, item_id=result.item_id)
+       if not result.should_have:
+           inventory_item.delete()
+       messages.append(result.message)
+
+    profile = UserProfile.objects.filter(user_id=user.id).first()
+    for result in RoomActionResult.objects.filter(action_id=action.id):
+        profile.room_id = result.room_id
+        profile.save()
+        messages.append(result.room.description)
+
+    return messages
+
+
 def index(request):
     command = request.GET.get('command', '')
 
@@ -71,5 +95,8 @@ def index(request):
 
     if not is_met:
         return build_response(message);
-    
-    return build_response(action.message)
+
+    messages = perform_side_effects(action, request.user)
+    #messages.append(action.message)
+
+    return build_response(messages)
