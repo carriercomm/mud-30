@@ -3,9 +3,53 @@
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                max-width: 960px;
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 24px;
+            }
+
+            #messages {
+                width: 100%;
+            }
+
+            #input {
+                width: 100%;
+                padding: 0.5em;
+            }
+        </style>
     </head>
     <body>
-        <h1>Getting MUDdy!</h1>
-        <p>Hello world</p>
+        <p id="messages"></p>
+        <input type="text" id="input" />
+        <script>
+            var sendCommand = function(command) {
+                var ajaxConfig = {
+                    url: '/mud/actions',
+                    data: { command: command }
+                };
+                $.ajax(ajaxConfig).then(function(response) {
+                    $('#messages').html(response.messages.join('<br/>'));
+                });
+            };
+
+            sendCommand('');
+
+            $('#input').on('keydown', function(evt) {
+                if(evt.keyCode != 13) {
+                    return;
+                }
+
+                var command = $(this).val();
+                $(this).val('');
+                sendCommand(command);
+            });
+        </script>
     </body>
 </html>
