@@ -5,7 +5,9 @@ from django.core import serializers
 import re
 from .models import *
 
-def build_response(*args):
+def build_response(args):
+    if type(args) is not list:
+        args = [args]
     return JsonResponse({ 'messages' : args })
 
 def resolve_room_id(request):
