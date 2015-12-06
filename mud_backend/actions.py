@@ -1,11 +1,7 @@
 from django.http import JsonResponse
 import re
 from .models import *
-
-def build_response(args):
-    if type(args) is not list:
-        args = [args]
-    return JsonResponse({ 'messages' : args })
+from .action_response import build_response
 
 def resolve_room_id(request):
     if request.user == None:

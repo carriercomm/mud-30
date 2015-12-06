@@ -1,11 +1,8 @@
 from django.http import JsonResponse
 from .models import *
 import re
+from .action_response import build_response
 
-def build_response(args):
-    if type(args) is not list:
-        args = [args]
-    return JsonResponse({ 'messages' : args })
 
 class CommonCommands:
     def process_request(self, request):
