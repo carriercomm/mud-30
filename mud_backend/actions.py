@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.contrib.auth.models import User
 from django.core import serializers
 import re
 from .models import *
