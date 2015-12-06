@@ -78,10 +78,6 @@ def index(request):
 
     room_id = resolve_room_id(request)
 
-    if command == '':
-        room = Room.objects.filter(id=room_id).first()
-        return build_response(room.description)
-
     action = find_action(room_id, command)
     if action is None:
         return build_response('Sorry, I don\'t know what you mean')
@@ -94,6 +90,5 @@ def index(request):
         return build_response(message);
 
     messages = perform_side_effects(action, request.user)
-    #messages.append(action.message)
 
     return build_response(messages)
