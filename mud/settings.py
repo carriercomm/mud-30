@@ -49,7 +49,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'mud_backend.common_commands.CommonCommands',
+    'mud_backend.common_commands.LookCommand',
+    'mud_backend.common_commands.InventoryCommand',
 )
 
 ROOT_URLCONF = 'mud.urls'
